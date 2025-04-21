@@ -1,0 +1,276 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Happy Birthday DOA 🎉</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Comic Sans MS';
+      background: linear-gradient(135deg, #ffe0f0, #e0f7ff);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      overflow: hidden;
+      flex-direction: column;
+      text-align: center;
+      padding: 20px;
+    }
+
+    #step1, #step2, #final {
+      display: none;
+      flex-direction: column;
+      align-items: center;
+      animation: fadeIn 1.2s ease forwards;
+    }
+
+    h1 {
+      color: #ff66a3;
+      font-size: 2em;
+      margin-bottom: 20px;
+    }
+
+    p {
+      font-size: 1em;
+      color: #444;
+      max-width: 90%;
+      line-height: 1.6;
+    }
+
+    button {
+      padding: 12px 24px;
+      margin-top: 15px;
+      font-size: 1.1em;
+      background-color: #ffb3d9;
+      border: none;
+      border-radius: 12px;
+      cursor: pointer;
+      transition: 0.3s;
+      font-weight: bolder;
+      max-width: 80vw;
+    }
+
+    button:hover {
+      background-color: #ff99cc;
+    }
+
+    canvas {
+      position: fixed;
+      top: 0;
+      left: 0;
+      pointer-events: none;
+      z-index: 999;
+    }
+
+    #gif {
+      margin-top: 20px;
+    }
+
+    #gif img {
+      width: 90vw;
+      max-width: 300px;
+      border-radius: 12px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+      .envelope-container {
+  position: relative;
+  width: 100%;
+  max-width: 200px;
+  height: auto;
+  cursor: pointer;
+  font-size: 0;
+  text-align: center;
+  transition: transform 0.3s ease;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+    .closed-envelope, .open-envelope {
+      transition: opacity 0.6s ease;
+      line-height: 1;
+    }
+
+    .open-envelope {
+      display: none;
+    }
+
+    .show-open .closed-envelope {
+      display: none;
+    }
+
+    .show-open .open-envelope {
+      display: inline;
+      animation: popUp 0.8s ease forwards;
+    }
+
+    .message {
+      position: absolute;
+      top: 60%;
+      transform: translateY(0);
+      background: white;
+      padding: 15px;
+      border-radius: 10px;
+      width: 80vw;
+      max-width: 300px;
+      text-align: center;
+      box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+      opacity: 0;
+      transition: transform 1s ease, opacity 1s ease;
+      font-size: 1rem;
+    }
+
+    .show-open .message {
+      opacity: 1;
+      transform: translateY(-180px);
+    }
+
+    .message p {
+      margin: 0;
+      line-height: 1.5;
+      color: #444;
+    }
+
+    @keyframes popUp {
+      0% { transform: scale(0.8) rotate(-5deg); opacity: 0; }
+      50% { transform: scale(1.05) rotate(3deg); opacity: 0.8; }
+      100% { transform: scale(1) rotate(0); opacity: 1; }
+    }
+    .open-envelope img{
+      width: 500px;
+    }
+    .closed-envelope img{
+      width: 500px;
+    }
+    @media (max-width:600px){
+      .open-envelope img{
+        width: 300px;
+      } 
+      .closed-envelope img{
+        width: 300px;
+      }
+      .message{
+        width: 45vw;
+        top: 75%;
+      }
+    }
+    
+</style>
+</head>
+<body>
+
+  <div id="step1">
+    <h1>🎀 Hoşgeldin Lady 🎀</h1>
+    <p>Hazırsan ilerleyelim</p>
+    <button onclick="goToStep2()">İleri ⮕</button>
+  </div>
+  
+  <div id="step2">
+    <h1>🎂 🎉 HAPPY BIRTHDAY DOAA🎈🎈</h1>
+    <p>İyi ki varsın, hep mutlu ol 💕</p>
+    <button onclick="showFinal()">Son olarak ⮕</button>
+  </div>
+
+<div id="final">
+  <div class="envelope-container" id="envelopeContainer" onclick="openEnvelope()">
+    <div class="closed-envelope">
+      <img src="kapali_zarf.png" alt="Kapalı Kalpli Zarf">
+    </div>
+    <div class="open-envelope">
+      <img src="acik_zarf.png" alt="Açık Kalpli Zarf">
+    </div>
+    <div class="message">
+      <p>Kader mi, karma mı, nasip mi bilmiyorum...<br>
+      Ama iyi ki varsın.<br>
+      Yaşın dilediğin gibi geçsin<br>
+      İyi ki doğdun. 💖</p>
+    </div>
+  </div>
+</div>
+
+<canvas id="confetti-canvas"></canvas>
+
+<script>
+  const step1 = document.getElementById("step1");
+  const step2 = document.getElementById("step2");
+  const final = document.getElementById("final");
+  const canvas = document.getElementById("confetti-canvas");
+  const ctx = canvas.getContext("2d");
+
+  window.onload = () => {
+    step1.style.display = "flex";
+  }
+
+  function goToStep2() {
+    step1.style.display = "none";
+    step2.style.display = "flex";
+  }
+
+  function showFinal() {
+    step2.style.display = "none";
+    final.style.display = "flex";
+  }
+
+  function openEnvelope() {
+    document.querySelector('.envelope-container').classList.add('show-open');
+    startConfetti();
+  }
+
+  // Confetti 🎊
+  canvas.width = window.innerWidth;
+  canvas.height = window.innerHeight;
+
+  const pieces = [];
+  const colors = ["#ff66a3", "#66ccff", "#ffd966", "#a3ffae", "#f9b5ff"];
+
+  function random(min, max) {
+    return Math.random() * (max - min) + min;
+  }
+
+  for (let i = 0; i < 120; i++) {
+    pieces.push({
+      x: random(0, canvas.width),
+      y: random(0, canvas.height),
+      radius: random(2, 6),
+      color: colors[Math.floor(Math.random() * colors.length)],
+      speed: random(1, 3),
+      sway: random(0.5, 1.5),
+      direction: Math.random() < 0.5 ? -1 : 1
+    });
+  }
+
+  function drawConfetti() {
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    for (let p of pieces) {
+      p.y += p.speed;
+      p.x += Math.sin(p.y * 0.05) * p.sway * p.direction;
+      if (p.y > canvas.height) p.y = -10;
+      ctx.beginPath();
+      ctx.arc(p.x, p.y, p.radius, 0, 2 * Math.PI);
+      ctx.fillStyle = p.color;
+      ctx.fill();
+    }
+    requestAnimationFrame(drawConfetti);
+  }
+
+  function startConfetti() {
+    drawConfetti();
+  }
+
+  window.addEventListener("resize", () => {
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+  });
+</script>
+
+</body>
+</html>
+
